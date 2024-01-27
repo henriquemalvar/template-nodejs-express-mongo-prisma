@@ -1,32 +1,39 @@
 /* eslint-disable no-return-await */
+import { prisma } from '../../../../prisma';
 import { IUser } from '../../../users/dtos/IUser';
-import { UserRepository } from '../../../users/infra/prisma/repositories/UserRepository';
-import { IUserRepository } from '../../../users/repositories/IUserRepository';
 import { ICategory } from '../../dtos/ICategory';
 import { CategoryRepository } from '../../infra/prisma/repositories/CategoryRepository';
 import { ICategoryRepository } from '../../repositories/ICategoryRepository';
 
 describe('Category repository test', () => {
   let categoryRepository: ICategoryRepository;
-  let userRepository: IUserRepository;
 
   let user: IUser;
 
   beforeAll(async () => {
     categoryRepository = new CategoryRepository();
-    userRepository = new UserRepository();
 
-    const name = 'test';
-    const email = 'test@test';
-    const password = '1234';
+    user = await prisma.user.create({
+      data: {
+        name: 'test',
+        email: 'test@test',
+        password: '1234',
+      },
+    });
+  });
 
-    user = (await userRepository.create({ name, email, password })) as IUser;
+  afterEach(async () => {
+    await prisma.category.deleteMany();
+  });
+
+  afterAll(async () => {
+    await prisma.user.deleteMany();
   });
 
   it('Should be able to create a category', async () => {
     const name = 'test';
 
-    const category = await categoryRepository.create(name, user);
+    const category = await categoryRepository.create(name, user.id);
 
     expect(category).toHaveProperty('id');
     expect(category.name).toEqual(name);
@@ -35,7 +42,7 @@ describe('Category repository test', () => {
   it('Should be able to delete category', async () => {
     const name = 'test 1';
 
-    const category = await categoryRepository.create(name, user);
+    const category = await categoryRepository.create(name, user.id);
 
     await categoryRepository.delete(category);
 
@@ -47,7 +54,7 @@ describe('Category repository test', () => {
   it('Should be able to find by ID', async () => {
     const name = 'test 2';
 
-    const category = await categoryRepository.create(name, user);
+    const category = await categoryRepository.create(name, user.id);
 
     const foundCategory = (await categoryRepository.findById(
       category.id,
@@ -59,7 +66,7 @@ describe('Category repository test', () => {
   it('Should be able to find all with filter name', async () => {
     const name = 'test 3';
 
-    const category = await categoryRepository.create(name, user);
+    const category = await categoryRepository.create(name, user.id);
 
     const foundCategories = await categoryRepository.findAll(
       user.id,
@@ -79,7 +86,7 @@ describe('Category repository test', () => {
       async category => await categoryRepository.delete(category),
     );
 
-    const category = await categoryRepository.create(name, user);
+    const category = await categoryRepository.create(name, user.id);
 
     const foundCategories = await categoryRepository.findAll(user.id, name);
 

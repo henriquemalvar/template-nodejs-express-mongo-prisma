@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import { IUser } from '../../../users/dtos/IUser';
 import { ICreateCardDTO } from '../../dtos/ICreateCardDTO';
 import { ICardRepository } from '../../repositories/ICardRepository';
 import { CardRepositoryInMemory } from '../../repositories/inMemory/CardRepositoryInMemory';
@@ -19,7 +18,7 @@ describe('Get cards service', () => {
       status: '10',
       title: 'Test',
       description: 'Test card',
-      user: {} as IUser,
+      user_id: 'uuid',
     };
 
     const cardCreated = await cardRepositoryInMemory.create(card);

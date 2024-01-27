@@ -7,47 +7,41 @@ datasource db {
   url      = env("MONGODB_URI")
 }
 
-model CardCategory {
-  card_id     String   @id
-  category_id String   @id
-  Cards       Cards[]  @relation("CardCategory")
-  Category    Category  @relation("CardCategory")
-}
-
 model Cards {
-  id           String         @id @default(auto()) @map("_id") // Using default auto-generated MongoDB ObjectId
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId // Using default auto-generated MongoDB ObjectId
   status       String
   title        String
   description  String
   created_at   DateTime
   updated_at   DateTime
   user_id      String
-  CardCategory CardCategory[]  @relation("CardCategory")
+  category_ids String[]
 }
 
 model Category {
-  id           String         @id @default(auto()) @map("_id") // Using default auto-generated MongoDB ObjectId
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId // Using default auto-generated MongoDB ObjectId
   created_at   DateTime
   updated_at   DateTime
   name         String
   user_id      String
-  CardCategory CardCategory[]  @relation("CardCategory")
+  card_ids     String[]
 }
 
 model User {
-  id         String   @id @default(auto()) @map("_id") // Using default auto-generated MongoDB ObjectId
-  created_at DateTime
-  updated_at DateTime
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId // Using default auto-generated MongoDB ObjectId
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
   name       String
-  email      String
+  email      String    @unique
   password   String
   photo      String?
-  Cards      Cards[]  @relation(references: [user_id])
-  Category   Category[]  @relation(references: [user_id])
+  card_ids   String[]
+  category_ids String[]
 }
 
+
 model migrations {
-  id        Int    @id @default(autoincrement())
+  id        Int    @id @map("_id")
   timestamp BigInt
   name      String
 }

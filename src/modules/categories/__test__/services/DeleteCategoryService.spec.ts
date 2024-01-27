@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { v4 as uuidv4 } from 'uuid';
 import LibError from '../../../../shared/errors/LibError';
-import { IUser } from '../../../users/dtos/IUser';
 import { ICategoryRepository } from '../../repositories/ICategoryRepository';
 import { CategoryRepositoryInMemory } from '../../repositories/inMemory/CategoryRepositoryInMemory';
 import { DeleteCategoryService } from '../../services/DeleteCategoryService';
@@ -20,7 +19,7 @@ describe('Delete category service', () => {
   it('should be able to delete category', async () => {
     const categoryCreated = await categoryRepositoryInMemory.create(
       'test',
-      {} as IUser,
+      'uuid',
     );
 
     await deleteCategoryService.execute(categoryCreated.id);

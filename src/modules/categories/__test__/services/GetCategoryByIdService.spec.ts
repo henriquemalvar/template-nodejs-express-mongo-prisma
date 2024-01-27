@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import { IUser } from '../../../users/dtos/IUser';
 import { ICategoryRepository } from '../../repositories/ICategoryRepository';
 import { CategoryRepositoryInMemory } from '../../repositories/inMemory/CategoryRepositoryInMemory';
 import { GetCategoriesService } from '../../services/GetCategoriesService';
@@ -16,7 +15,7 @@ describe('Get all categories service', () => {
   it('should be able to get categories by filter', async () => {
     const categoryCreated = await categoryRepositoryInMemory.create(
       'test',
-      {} as IUser,
+      'uuid',
     );
 
     const findCategory = await getCategoriesService.execute({
@@ -31,7 +30,7 @@ describe('Get all categories service', () => {
   it('should be able to get all categories', async () => {
     const categoryCreated = await categoryRepositoryInMemory.create(
       'test 1',
-      {} as IUser,
+      'uuid',
     );
 
     const findCategory = await getCategoriesService.execute({

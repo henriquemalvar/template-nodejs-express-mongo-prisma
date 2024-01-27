@@ -11,9 +11,11 @@ export class UserRepository implements IUserRepository {
   }
 
   async update(user: IUser): Promise<IUser> {
+    const { id, ...data } = user;
+
     return prisma.user.update({
-      where: { _id: user.id },
-      data: user,
+      where: { id },
+      data,
     });
   }
 
@@ -22,12 +24,12 @@ export class UserRepository implements IUserRepository {
   }
 
   async findById(id: string): Promise<IUser | null> {
-    return prisma.user.findUnique({ where: { _id: id } });
+    return prisma.user.findUnique({ where: { id } });
   }
 
   async delete(user: IUser): Promise<void> {
     await prisma.user.delete({
-      where: { _id: user.id },
+      where: { id: user.id },
     });
   }
 }

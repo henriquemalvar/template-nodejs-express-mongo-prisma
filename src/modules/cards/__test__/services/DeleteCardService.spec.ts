@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { v4 as uuidv4 } from 'uuid';
 import LibError from '../../../../shared/errors/LibError';
-import { IUser } from '../../../users/dtos/IUser';
 import { ICreateCardDTO } from '../../dtos/ICreateCardDTO';
 import { ICardRepository } from '../../repositories/ICardRepository';
 import { CardRepositoryInMemory } from '../../repositories/inMemory/CardRepositoryInMemory';
@@ -21,7 +20,7 @@ describe('Delete card service', () => {
       status: '10',
       title: 'Test',
       description: 'Test card',
-      user: {} as IUser,
+      user_id: 'uuid',
     };
 
     const cardCreated = await cardRepositoryInMemory.create(card);

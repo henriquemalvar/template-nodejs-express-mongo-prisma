@@ -1,3 +1,4 @@
+import { prisma } from '../../../../prisma';
 import { UserRepository } from '../../infra/prisma/repositories/UserRepository';
 import { IUserRepository } from '../../repositories/IUserRepository';
 
@@ -6,6 +7,10 @@ describe('User repository test', () => {
 
   beforeAll(async () => {
     userRepository = new UserRepository();
+  });
+
+  afterEach(async () => {
+    await prisma.user.deleteMany();
   });
 
   it('Should be able to create a user', async () => {

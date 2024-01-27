@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import { IUser } from '../../../users/dtos/IUser';
 import { ICard } from '../../dtos/ICard';
 import { ICreateCardDTO } from '../../dtos/ICreateCardDTO';
 import { IGetAllCardsDTO } from '../../dtos/IGetAllCardsDTO';
@@ -12,21 +11,16 @@ export class CardRepositoryInMemory implements ICardRepository {
     description,
     status,
     title,
-    user,
+    user_id,
   }: ICreateCardDTO): Promise<ICard> {
     const card = {} as ICard;
-
-    Object.assign(user || ({} as IUser), {
-      ...user,
-    });
 
     Object.assign(card, {
       id: uuidv4(),
       description,
       status,
       title,
-      user,
-      user_id: user?.id,
+      user_id,
     });
 
     this.cards.push(card);

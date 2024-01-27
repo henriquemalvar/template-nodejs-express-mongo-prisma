@@ -35,7 +35,7 @@ export class CreateCardService {
       status,
       title,
       description,
-      user,
+      user_id: user.id,
     });
 
     return card;

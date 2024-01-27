@@ -9,27 +9,31 @@ export class CardRepository implements ICardRepository {
     description,
     status,
     title,
-    user,
+    user_id,
   }: ICreateCardDTO): Promise<ICard> {
     return prisma.cards.create({
       data: {
         description,
         status,
         title,
-        user: { connect: { id: user.id } },
+        user_id,
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     });
   }
 
   async update(card: ICard): Promise<ICard> {
+    const { id, ...data } = card;
+
     return prisma.cards.update({
-      where: { _id: card.id }, // Use _id for MongoDB
-      data: card,
+      where: { id }, // Use _id for MongoDB
+      data,
     });
   }
 
   async findById(id: string): Promise<ICard | null> {
-    return prisma.cards.findUnique({ where: { _id: id } });
+    return prisma.cards.findUnique({ where: { id } });
   }
 
   async findAll({
@@ -41,8 +45,8 @@ export class CardRepository implements ICardRepository {
   }: IGetAllCardsDTO): Promise<ICard[]> {
     return prisma.cards.findMany({
       where: {
-        user: { id: user_id },
-        _id: id ? { equals: id } : undefined,
+        user_id,
+        id: id ? { equals: id } : undefined,
         description: description
           ? { contains: description.toLowerCase() }
           : undefined,
@@ -54,7 +58,7 @@ export class CardRepository implements ICardRepository {
 
   async delete(card: ICard): Promise<void> {
     await prisma.cards.delete({
-      where: { _id: card.id },
+      where: { id: card.id },
     });
   }
 }

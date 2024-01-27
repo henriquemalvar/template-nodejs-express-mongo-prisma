@@ -86,18 +86,14 @@ or
 yarn
 ```
 
-### Running Migrations
+### Add tables
 
-To add the project's tables to your database, run the following command:
-
-```
-npm run typeorm migration:run
-```
-
-or
+To add the project's tables to your database, it is necessary to make a POST request to the required table using one of the routes:
 
 ```
-yarn typeorm migration:run
+Create User table: POST  https://localhost:3333/user
+Create Card table: POST  https://localhost:3333/card/{user_id}
+Create Category table: POST  https://localhost:3333/category/{user_id}
 ```
 
 ### Starting the Project

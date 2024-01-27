@@ -1,7 +1,6 @@
 /* eslint-disable no-return-await */
+import { prisma } from '../../../../prisma';
 import { IUser } from '../../../users/dtos/IUser';
-import { UserRepository } from '../../../users/infra/prisma/repositories/UserRepository';
-import { IUserRepository } from '../../../users/repositories/IUserRepository';
 import { ICard } from '../../dtos/ICard';
 import { ICreateCardDTO } from '../../dtos/ICreateCardDTO';
 import { IGetAllCardsDTO } from '../../dtos/IGetAllCardsDTO';
@@ -10,19 +9,27 @@ import { ICardRepository } from '../../repositories/ICardRepository';
 
 describe('Card repository test', () => {
   let cardRepository: ICardRepository;
-  let userRepository: IUserRepository;
 
   let user: IUser;
 
   beforeAll(async () => {
     cardRepository = new CardRepository();
-    userRepository = new UserRepository();
 
-    const name = 'test';
-    const email = 'test@test';
-    const password = '1234';
+    user = await prisma.user.create({
+      data: {
+        name: 'test',
+        email: 'test@test',
+        password: '1234',
+      },
+    });
+  });
 
-    user = await userRepository.create({ name, email, password });
+  afterEach(async () => {
+    await prisma.cards.deleteMany();
+  });
+
+  afterAll(async () => {
+    await prisma.user.deleteMany();
   });
 
   it('Should be able to create a card', async () => {
@@ -30,7 +37,7 @@ describe('Card repository test', () => {
       status: '10',
       title: 'Test 1',
       description: 'Test card 1',
-      user,
+      user_id: user.id,
     };
 
     const createdCard = await cardRepository.create(card);
@@ -44,7 +51,7 @@ describe('Card repository test', () => {
       status: '10',
       title: 'Test 2',
       description: 'Test card 2',
-      user,
+      user_id: user.id,
     };
 
     const createdCard = await cardRepository.create(card);
@@ -61,7 +68,7 @@ describe('Card repository test', () => {
       status: '10',
       title: 'Test 3',
       description: 'Test card 3',
-      user,
+      user_id: user.id,
     };
 
     const createdCard = await cardRepository.create(card);
@@ -78,7 +85,7 @@ describe('Card repository test', () => {
       status: '10',
       title: 'Test 4',
       description: 'Test card 4',
-      user,
+      user_id: user.id,
     };
 
     const createdCard = await cardRepository.create(card);
@@ -99,7 +106,7 @@ describe('Card repository test', () => {
       status: '10',
       title: 'Test 5',
       description: 'Test card 5',
-      user,
+      user_id: user.id,
     };
 
     const createdCard = await cardRepository.create(card);

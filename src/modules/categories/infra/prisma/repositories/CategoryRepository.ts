@@ -3,11 +3,13 @@ import { ICategory } from '../../../dtos/ICategory';
 import { ICategoryRepository } from '../../../repositories/ICategoryRepository';
 
 export class CategoryRepository implements ICategoryRepository {
-  async create(name: string, user: any): Promise<ICategory> {
+  async create(name: string, user_id: string): Promise<ICategory> {
     return prisma.category.create({
       data: {
         name,
-        user: { connect: { id: user.id } },
+        user_id,
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     });
   }
@@ -15,7 +17,7 @@ export class CategoryRepository implements ICategoryRepository {
   async findAll(user_id: string, name?: string): Promise<ICategory[]> {
     return prisma.category.findMany({
       where: {
-        user: { id: user_id },
+        user_id,
         name: name ? { contains: name.toLowerCase() } : undefined,
       },
     });

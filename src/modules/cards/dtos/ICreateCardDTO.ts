@@ -2,5 +2,5 @@ export interface ICreateCardDTO {
   status: string;
   title: string;
   description: string;
-  user: any;
+  user_id: string;
 }

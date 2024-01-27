@@ -25,7 +25,7 @@ export class CreateCategoryService {
       throw new LibError('User does not exists!', 404);
     }
 
-    const card = await this.categoryRepository.create(name, user);
+    const card = await this.categoryRepository.create(name, user.id);
 
     return card;
   }

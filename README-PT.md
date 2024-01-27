@@ -86,12 +86,14 @@ ou
 yarn
 ```
 
-### Rodando migrations
+### Adicionando tabelas
 
-Para adicionar as tabelas do projeto ao seu banco rode o seguinte comando:
+Para adicionar as tabelas do projeto ao seu banco é necessário realizar um post para a tabela requirida, utilizando uma das rotas:
 
 ```
-npx prisma migrate dev
+Create User table: POST  https://localhost:3333/user
+Create Card table: POST  https://localhost:3333/card/{user_id}
+Create Category table: POST  https://localhost:3333/category/{user_id}
 
 ```
 

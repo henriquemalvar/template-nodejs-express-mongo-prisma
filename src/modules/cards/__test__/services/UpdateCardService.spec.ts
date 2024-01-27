@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import LibError from '../../../../shared/errors/LibError';
 import { ICategoryRepository } from '../../../categories/repositories/ICategoryRepository';
 import { CategoryRepositoryInMemory } from '../../../categories/repositories/inMemory/CategoryRepositoryInMemory';
-import { IUser } from '../../../users/dtos/IUser';
 import { ICreateCardDTO } from '../../dtos/ICreateCardDTO';
 import { IUpdateCardServiceDTO } from '../../dtos/IUpdateCardServiceDTO';
 import { ICardRepository } from '../../repositories/ICardRepository';
@@ -28,7 +27,7 @@ describe('Update card service', () => {
       status: '10',
       title: 'Test',
       description: 'Test card',
-      user: {} as IUser,
+      user_id: 'uuid',
     };
 
     const cardCreated = await cardRepositoryInMemory.create(card);
