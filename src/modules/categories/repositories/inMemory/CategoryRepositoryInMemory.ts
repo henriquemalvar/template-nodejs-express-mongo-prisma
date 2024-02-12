@@ -1,16 +1,22 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ICategory } from '../../dtos/ICategory';
+import { ICreateCategoryUseCaseDTO } from '../../dtos/ICreateCategoryUseCaseDTO';
 import { ICategoryRepository } from '../ICategoryRepository';
 
 export class CategoryRepositoryInMemory implements ICategoryRepository {
   categories: ICategory[] = [];
 
-  async create(name: string, user_id: string): Promise<ICategory> {
+  async create({
+    name,
+    color,
+    user_id,
+  }: ICreateCategoryUseCaseDTO): Promise<ICategory> {
     const category = {} as ICategory;
 
     Object.assign(category, {
       id: uuidv4(),
       name,
+      color,
       user_id,
     });
 

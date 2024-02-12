@@ -32,8 +32,13 @@ describe('Category repository test', () => {
 
   it('Should be able to create a category', async () => {
     const name = 'test';
+    const color = 'red';
 
-    const category = await categoryRepository.create(name, user.id);
+    const category = await categoryRepository.create({
+      name,
+      color,
+      user_id: user.id,
+    });
 
     expect(category).toHaveProperty('id');
     expect(category.name).toEqual(name);
@@ -41,8 +46,13 @@ describe('Category repository test', () => {
 
   it('Should be able to delete category', async () => {
     const name = 'test 1';
+    const color = 'red';
 
-    const category = await categoryRepository.create(name, user.id);
+    const category = await categoryRepository.create({
+      name,
+      color,
+      user_id: user.id,
+    });
 
     await categoryRepository.delete(category);
 
@@ -53,8 +63,13 @@ describe('Category repository test', () => {
 
   it('Should be able to find by ID', async () => {
     const name = 'test 2';
+    const color = 'red';
 
-    const category = await categoryRepository.create(name, user.id);
+    const category = await categoryRepository.create({
+      name,
+      color,
+      user_id: user.id,
+    });
 
     const foundCategory = (await categoryRepository.findById(
       category.id,
@@ -65,8 +80,13 @@ describe('Category repository test', () => {
 
   it('Should be able to find all with filter name', async () => {
     const name = 'test 3';
+    const color = 'red';
 
-    const category = await categoryRepository.create(name, user.id);
+    const category = await categoryRepository.create({
+      name,
+      color,
+      user_id: user.id,
+    });
 
     const foundCategories = await categoryRepository.findAll(
       user.id,
@@ -79,6 +99,7 @@ describe('Category repository test', () => {
 
   it('Should be able to find all', async () => {
     const name = 'test 4';
+    const color = 'red';
 
     const foundCategoriesDeleted = await categoryRepository.findAll(user.id);
 
@@ -86,7 +107,27 @@ describe('Category repository test', () => {
       async category => await categoryRepository.delete(category),
     );
 
-    const category = await categoryRepository.create(name, user.id);
+    const category = await categoryRepository.create({
+      name,
+      color,
+      user_id: user.id,
+    });
+
+    const foundCategories = await categoryRepository.findAll(user.id, name);
+
+    expect(foundCategories).toHaveLength(1);
+    expect(foundCategories[0].id).toEqual(category.id);
+  });
+
+  it('Should be able to find all by filters', async () => {
+    const name = 'test 5';
+    const color = 'red';
+
+    const category = await categoryRepository.create({
+      name,
+      color,
+      user_id: user.id,
+    });
 
     const foundCategories = await categoryRepository.findAll(user.id, name);
 

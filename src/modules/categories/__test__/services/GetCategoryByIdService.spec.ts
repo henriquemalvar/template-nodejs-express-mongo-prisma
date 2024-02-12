@@ -13,10 +13,11 @@ describe('Get all categories service', () => {
   });
 
   it('should be able to get categories by filter', async () => {
-    const categoryCreated = await categoryRepositoryInMemory.create(
-      'test',
-      'uuid',
-    );
+    const categoryCreated = await categoryRepositoryInMemory.create({
+      name: 'test',
+      color: 'red',
+      user_id: 'uuid',
+    });
 
     const findCategory = await getCategoriesService.execute({
       name: categoryCreated.name,
@@ -28,10 +29,11 @@ describe('Get all categories service', () => {
   });
 
   it('should be able to get all categories', async () => {
-    const categoryCreated = await categoryRepositoryInMemory.create(
-      'test 1',
-      'uuid',
-    );
+    const categoryCreated = await categoryRepositoryInMemory.create({
+      name: 'test 1',
+      color: 'red',
+      user_id: 'uuid',
+    });
 
     const findCategory = await getCategoriesService.execute({
       name: undefined,
