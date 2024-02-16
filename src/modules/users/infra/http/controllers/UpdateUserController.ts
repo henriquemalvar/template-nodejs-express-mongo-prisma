@@ -19,6 +19,7 @@ export class UpdateUserController {
       email,
       photo,
     });
+    user.photo = `http://localhost:3333/upload/${user.photo}`;
 
     return response.status(201).json(user);
   }

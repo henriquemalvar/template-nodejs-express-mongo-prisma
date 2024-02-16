@@ -10,6 +10,8 @@ export class SessionController {
 
     const { user, token } = await sessionUser.execute(email, password);
 
+    user.photo = `http://localhost:3333/upload/${user.photo}`;
+
     return response.json({
       user,
       token,
